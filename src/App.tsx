@@ -2,7 +2,14 @@ import { useState } from 'react'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [answer, setAnswer] = useState("");
+  const [expression, setExpression] = useState("");
+  const et = expression.trim();
+
+  const isOperator = (symbol: string) => {
+    return /[*/+-]/.test(symbol);
+  };
+
 
   return (
     <>
