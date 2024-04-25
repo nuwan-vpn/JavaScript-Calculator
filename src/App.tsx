@@ -47,6 +47,39 @@ function App() {
     }
   };
 
+  const calculate = () => {
+    // if last char is an operator, do nothing
+    if (isOperator(et.charAt(et.length - 1))) return;
+    // clean the expression so that two operators in a row uses the last operator
+    // 5 * - + 5 = 10
+    const parts = et.split(" ");
+    const newParts = [];
+
+    // go through parts backwards
+    for (let i = parts.length - 1; i >= 0; i--) {
+      if (["*", "/", "+"].includes(parts[i]) && isOperator(parts[i - 1])) {
+        newParts.unshift(parts[i]);
+        let j = 0;
+        let k = i - 1;
+        while (isOperator(parts[k])) {
+          k--;
+          j++;
+        }
+        i -= j;
+      } else {
+        newParts.unshift(parts[i]);
+      }
+    }
+    const newExpression = newParts.join(" ");
+    if (isOperator(newExpression.charAt(0))) {
+      setAnswer(eval(answer + newExpression) as string);
+    } else {
+      setAnswer(eval(newExpression) as string);
+    }
+    setExpression("");
+  };
+
+
   return (
     <>
       <div className="container">
