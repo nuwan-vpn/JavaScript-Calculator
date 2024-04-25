@@ -10,6 +10,42 @@ function App() {
     return /[*/+-]/.test(symbol);
   };
 
+  const buttonPress = (symbol: string) => {
+    if (symbol === "clear") {
+      setAnswer("");
+      setExpression("0");
+    } else if (symbol === "negative") {
+      if (answer === "") return;
+      setAnswer(
+        answer.toString().charAt(0) === "-" ? answer.slice(1) : "-" + answer
+      );
+    } else if (symbol === "percent") {
+      if (answer === "") return;
+      setAnswer((parseFloat(answer) / 100).toString());
+    } else if (isOperator(symbol)) {
+      setExpression(et + " " + symbol + " ");
+    } else if (symbol === "=") {
+      calculate();
+    } else if (symbol === "0") {
+      if (expression.charAt(0) !== "0") {
+        setExpression(expression + symbol);
+      }
+    } else if (symbol === ".") {
+      // split by operators and get last number
+      const lastNumber = expression.split(/[-+/*]/g).pop();
+      if (!lastNumber) return;
+      console.log("lastNumber :>> ", lastNumber);
+      // if last number already has a decimal, don't add another
+      if (lastNumber?.includes(".")) return;
+      setExpression(expression + symbol);
+    } else {
+      if (expression.charAt(0) === "0") {
+        setExpression(expression.slice(1) + symbol);
+      } else {
+        setExpression(expression + symbol);
+      }
+    }
+  };
 
   return (
     <>
